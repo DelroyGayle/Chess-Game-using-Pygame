@@ -7,3 +7,11 @@ Build your own Chess Game and experiment it.
 
 ## How to Run this code
 `` python3 main.py ``
+
+## Create an environment
+
+# Windows
+# You can also use `py -3 -m venv .venv`
+python -m venv .venv
+
+https://code.visualstudio.com/docs/python/environments  
