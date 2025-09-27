@@ -56,7 +56,8 @@ Tested the 'checkmate' functionality for BLACK using **Fool's Mate**
 
 ```
 Black can achieve checkmate in two moves against a significant blunder by White with the moves 
-1. f3 e5 2. g4?? Qh4#. This sequence is known as Fool's Mate and relies on White's extraordinary mistakes.  
+1. f3 e5 2. g4?? Qh4#.
+This sequence is known as Fool's Mate and relies on White's extraordinary mistakes.  
 
 Moves: 
 f3: (White moves the f-pawn one square forward)
@@ -78,7 +79,7 @@ e.g. **1. f3 e6 2. g4?? Qh4#.**
 
 1. The chess move *En Passant* needs to be added
 2. The chess move *Castling* needs to be added
-3. This program allows a user to make a move which leaves their king in 'check'. **This is not allowed in the [Rules of Chess](https://en.wikipedia.org/wiki/Rules_of_chess)**
+3. This program allows a user to make a move which leaves their king in 'check'.<br>**This is not allowed in the [Rules of Chess](https://en.wikipedia.org/wiki/Rules_of_chess)**
 
 ## Miscellaneous
 
