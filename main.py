@@ -5,7 +5,7 @@ import time
 pygame.init()
 
 # Constants
-WIDTH,  HEIGHT = 800,  800
+WIDTH, HEIGHT = 800, 800
 SQUARE_SIZE = WIDTH // 8
 
 # colors
@@ -53,27 +53,27 @@ def init_board():
 # Rooks
     board[0][0] = board[0][7] = ChessPiece('black', 'rook',
                                            'images/black_rook.png')
-    board[7][0] = board[7][7] = ChessPiece('white',  'rook',
+    board[7][0] = board[7][7] = ChessPiece('white', 'rook',
                                            'images/white_rook.png')
 #  Knights
-    board[0][1] = board[0][6] = ChessPiece('black',  'knight',
+    board[0][1] = board[0][6] = ChessPiece('black', 'knight',
                                            'images/black_knight.png')
-    board[7][1] = board[7][6] = ChessPiece('white',  'knight',
+    board[7][1] = board[7][6] = ChessPiece('white', 'knight',
                                            'images/white_knight.png')
 
 #  Bishops
-    board[0][2] = board[0][5] = ChessPiece('black',  'bishop',
+    board[0][2] = board[0][5] = ChessPiece('black', 'bishop',
                                            'images/black_bishop.png')
-    board[7][2] = board[7][5] = ChessPiece('white',  'bishop',
+    board[7][2] = board[7][5] = ChessPiece('white', 'bishop',
                                            'images/white_bishop.png')
 
 #  Queens
-    board[0][3] = ChessPiece('black',  'queen',  'images/black_queen.png')
-    board[7][3] = ChessPiece('white',  'queen',  'images/white_queen.png')
+    board[0][3] = ChessPiece('black', 'queen', 'images/black_queen.png')
+    board[7][3] = ChessPiece('white', 'queen', 'images/white_queen.png')
 
 #  Kings
-    board[0][4] = ChessPiece('black',  'king',  'images/black_king.png')
-    board[7][4] = ChessPiece('white',  'king',  'images/white_king.png')
+    board[0][4] = ChessPiece('black', 'king', 'images/black_king.png')
+    board[7][4] = ChessPiece('white', 'king', 'images/white_king.png')
 
 
 # Function to draw the board
@@ -83,11 +83,11 @@ def draw_board():
             color = WHITE if (row + col) % 2 == 0 else BROWN
             pygame.draw.rect(screen, color, (col * SQUARE_SIZE,
                                              row * SQUARE_SIZE,
-                                             SQUARE_SIZE,  SQUARE_SIZE))
+                                             SQUARE_SIZE, SQUARE_SIZE))
 
     if selected_pos:
         pygame.draw.rect(screen, YELLOW,
-                         (selected_pos[1]*SQUARE_SIZE,
+                         (selected_pos[1] * SQUARE_SIZE,
                           selected_pos[0] * SQUARE_SIZE,
                           SQUARE_SIZE, SQUARE_SIZE))
 
@@ -98,85 +98,86 @@ def draw_piece():
         for col in range(8):
             piece = board[row][col]
             if piece:
-                screen.blit(piece.image, (col*SQUARE_SIZE,  row*SQUARE_SIZE))
+                screen.blit(piece.image,
+                            (col * SQUARE_SIZE, row * SQUARE_SIZE))
 
 
 #  Function to get valid moves for a piece
-def get_valid_moves(piece,  row,  col):
+def get_valid_moves(piece, row, col):
     moves = []
     if piece.type == 'pawn':
         direction = -1 if piece.color == 'white' else 1
         if 0 <= row + direction < 8 and board[row + direction][col] is None:
-            moves.append((row + direction,  col))
+            moves.append((row + direction, col))
             if ((piece.color == 'white' and row == 6)
                     or (piece.color == 'black' and row == 1)):
-                if board[row + 2*direction][col] is None:
-                    moves.append((row + 2*direction,  col))
+                if board[row + 2 * direction][col] is None:
+                    moves.append((row + 2 * direction, col))
         for dc in [-1,  1]:
             if 0 <= row + direction < 8 and 0 <= col + dc < 8:
                 if (board[row + direction][col + dc] and
                         board[row + direction][col + dc].color != piece.color):
-                    moves.append((row + direction,  col + dc))
+                    moves.append((row + direction, col + dc))
 
     elif piece.type == 'rook':
-        for dr,  dc in [(1,  0),  (-1,  0),  (0,  1),  (0,  -1)]:
-            r,  c = row + dr,  col + dc
+        for dr, dc in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+            r, c = row + dr, col + dc
             while 0 <= r < 8 and 0 <= c < 8:
                 if board[r][c] is None:
-                    moves.append((r,  c))
+                    moves.append((r, c))
                 elif board[r][c].color != piece.color:
-                    moves.append((r,  c))
+                    moves.append((r, c))
                     break
                 else:
                     break
-                r,  c = r + dr,  c + dc
+                r,  c = r + dr, c + dc
 
     elif piece.type == 'knight':
-        for dr, dc in [(2,  1),  (2,  -1),  (-2,  1),  (-2,  -1),  (1,  2),
-                       (1,  -2),  (-1,  2),  (-1,  -2)]:
-            r,  c = row + dr,  col + dc
+        for dr, dc in [(2, 1), (2, -1), (-2, 1), (-2, -1), (1, 2),
+                       (1, -2), (-1, 2), (-1, -2)]:
+            r,  c = row + dr, col + dc
             if (0 <= r < 8 and 0 <= c < 8
                     and ((board[r][c] is None
                          or board[r][c].color != piece.color))):
-                moves.append((r,  c))
+                moves.append((r, c))
 
     elif piece.type == 'bishop':
-        for dr,  dc in [(1,  1),  (1,  -1),  (-1,  1),  (-1,  -1)]:
-            r,  c = row + dr,  col + dc
+        for dr, dc in [(1, 1), (1, -1), (-1, 1), (-1, -1)]:
+            r, c = row + dr, col + dc
             while 0 <= r < 8 and 0 <= c < 8:
                 if board[r][c] is None:
-                    moves.append((r,  c))
+                    moves.append((r, c))
                 elif board[r][c].color != piece.color:
-                    moves.append((r,  c))
+                    moves.append((r, c))
                     break
                 else:
                     break
-                r,  c = r + dr,  c + dc
+                r,  c = r + dr, c + dc
 
     elif piece.type == 'queen':
-        for dr,  dc in [(1,  0),  (-1,  0),  (0,  1),  (0,  -1),
-                        (1,  1),  (1,  -1),  (-1,  1),  (-1,  -1)]:
-            r,  c = row + dr,  col + dc
+        for dr, dc in [(1, 0), (-1, 0), (0, 1), (0, -1),
+                       (1, 1), (1, -1), (-1, 1), (-1, -1)]:
+            r,  c = row + dr, col + dc
             while 0 <= r < 8 and 0 <= c < 8:
                 if board[r][c] is None:
-                    moves.append((r,  c))
+                    moves.append((r, c))
                 elif board[r][c].color != piece.color:
-                    moves.append((r,  c))
+                    moves.append((r, c))
                     break
                 else:
                     break
-                r,  c = r + dr,  c + dc
+                r,  c = r + dr, c + dc
 
     elif piece.type == 'king':
-        for dr in [-1,  0,  1]:
-            for dc in [-1,  0,  1]:
+        for dr in [-1, 0, 1]:
+            for dc in [-1, 0, 1]:
                 if dr == 0 and dc == 0:
                     continue
-                r,  c = row + dr,  col + dc
+                r,  c = row + dr, col + dc
                 if (0 <= r < 8 and 0 <= c < 8
                         and ((board[r][c] is None
                              or board[r][c].color != piece.color))):
-                    moves.append((r,  c))
+                    moves.append((r, c))
 
     return moves
 
@@ -204,7 +205,7 @@ def is_check(color):
     return False
 
 
-# function to check for checkmate
+# Function to check for checkmate
 def is_game_over():
     for r in range(8):
         for c in range(8):
@@ -225,9 +226,9 @@ def is_game_over():
     return True
 
 
-#  Function to handle mouse clicks
+# Function to handle mouse clicks
 def handle_click(pos):
-    global selected_piece,  selected_pos,  current_player
+    global selected_piece, selected_pos, current_player
     col = pos[0] // SQUARE_SIZE
     row = pos[1] // SQUARE_SIZE
 
@@ -235,9 +236,9 @@ def handle_click(pos):
         piece = board[row][col]
         if piece and piece.color == current_player:
             selected_piece = piece
-            selected_pos = (row,  col)
+            selected_pos = (row, col)
     else:
-        if ((row,  col) in
+        if ((row, col) in
                 get_valid_moves(selected_piece,
                                 selected_pos[0], selected_pos[1])):
             #  Move the piece
@@ -251,14 +252,14 @@ def handle_click(pos):
                 board[row][col] = ChessPiece(selected_piece.color, 'queen',
                                              promoted_queen)
 
-            #  Switch turns
+            # Switch turns
             current_player = 'black' if current_player == 'white' else 'white'
 
-            #  Check for game over
+            # Check for game over
             if is_game_over():
                 draw_board()
 
-                #  Remove the yellow colour
+                # Remove the yellow colour
                 therow = selected_pos[1]
                 thecolumn = selected_pos[0]
                 replace_color = (WHITE
