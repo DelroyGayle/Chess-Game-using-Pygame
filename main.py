@@ -1,11 +1,12 @@
 import pygame
 import sys
+import time
 
 pygame.init()
 
 #Constants
-WIDHT, HEIGHT = 800,800
-SQUARE_SIZE = WIDHT//8
+WIDTH, HEIGHT = 800,800
+SQUARE_SIZE = WIDTH//8
 
 #colors
 WHITE =(255,255,255)
@@ -15,7 +16,7 @@ YELLOW = (255,255,0)
 
 #create the screen
 
-screen = pygame.display.set_mode((WIDHT,HEIGHT))
+screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("Chess Game") 
 
 #Chess piece class
@@ -160,11 +161,11 @@ def is_check(color):
     king_pos = None
     for r in range(8):
         for c in range(8):
-            if board[r][c] and board[r][c].color == color and board[r][c]=='king':
+            if board[r][c] and board[r][c].type=='king' and board[r][c].color == color:
                 king_pos = (r,c)
                 break
-            if king_pos:
-                break
+        if king_pos:
+            break
 
     for r in range(8):
         for c in range(8):
@@ -173,7 +174,6 @@ def is_check(color):
                 if king_pos in get_valid_moves(piece,r,c):
                     return True
         
-
     return False       
 
 #function to check for checkmate 
@@ -223,10 +223,25 @@ def handle_click(pos):
 
             # Check for game over
             if is_game_over():
+                draw_board()
+
+                # Remove the yellow colour
+                therow = selected_pos[1]
+                thecolumn = selected_pos[0]
+                replace_color = WHITE if (therow + thecolumn) % 2 == 0 else BROWN
+                pygame.draw.rect(screen,replace_color,
+                                 (therow*SQUARE_SIZE,
+                                  thecolumn*SQUARE_SIZE,
+                                  SQUARE_SIZE,SQUARE_SIZE))
+
+                draw_piece()
+                pygame.display.flip()
                 if is_check(current_player):
                     print(f"Checkmate! {current_player.capitalize()} loses.")
                 else:
                     print("Stalemate!")
+                time.sleep(10) # Pause long enough for the user to see message
+                exit(0)
 
         selected_piece = None
         selected_pos = None
